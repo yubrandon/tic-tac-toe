@@ -1,0 +1,38 @@
+.header {
+    display:flex;
+    justify-content:center;
+    padding:30px;    
+    padding-top:60px;
+}
+.container{
+    padding:50px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board {
+    height:456px;
+    width:456px;
+    border:1px solid black;
+    background-color:black;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    gap:3px;
+    flex-wrap:wrap;
+}
+
+.tile {
+    background-color:white;
+    width:150px;
+    height:150px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:100px;
+    font-family: 'Lato', sans-serif;
+}
+.tile.empty:hover {
+    background-color:lightgray;
+}
