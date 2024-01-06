@@ -15,7 +15,7 @@ function createPlayer(name) {
 const board = (function () {
     const boardDiv = document.querySelector('.board');
     const tiles = ['','','','','','','','',''];
-    const winningSets = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+    const winningSets = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
     const setX = [];
     const setO = [];
     
@@ -25,36 +25,61 @@ const board = (function () {
             tile.classList.add('tile');
             tile.classList.add('empty');
             tile.innerText = tiles[i];
-            tile.id = '' + (i+1);
+            tile.id = '' + (i);
             boardDiv.appendChild(tile);
         }
     })();
     const tileClick = (function () 
     {
-        const tiles = document.querySelectorAll('.tile');
-        for(let i=0;i<tiles.length;i++) {
-            tiles[i].addEventListener('click', (e) => {
-                if(tiles[i].classList.contains('empty'))
+        const tileList = document.querySelectorAll('.tile');
+        for(let i=0;i<tileList.length;i++) {
+            tileList[i].addEventListener('click', (e) => {
+                if(tileList[i].classList.contains('empty'))
                 {
-                    tiles[i].classList.remove('empty');
+                    tileList[i].classList.remove('empty');
                     if(user.getMarker()) 
                     {
-                        tiles[i].innerText = 'X';
-                        setX.push(parseInt(tiles[i].id));
-                        setX.sort((a,b) => (a-b));
+                        tiles[parseInt(tileList[i].id)] = 'X';
+                        updateBoard();
+                        addToSet(setX,parseInt(tileList[i].id));
                         checkWin(setX);
-                        user.swapMarker();
                     }
                     else 
                     {
-                        tiles[i].innerText = 'O';
-                        setO.push(parseInt(tiles[i].id));
-                        setO.sort((a,b) => (a-b));
+                        tiles[parseInt(tileList[i].id)] = 'O';
+                        updateBoard();
+                        addToSet(setO,parseInt(tileList[i].id));
                         checkWin(setO);
-                        user.swapMarker();
                     }
+                    if(!vsAI) user.swapMarker();
                     //console.log(e.target);
+                    console.log(vsAI);
+                    if(vsAI)
+                    {
+                        let arr = getEmptyTiles();
+                        let index = arr[Math.floor(Math.random()*(arr.length-1))];
+                        switch(user.getMarker())
+                        {
+                            case true: 
+                                tiles[index] = 'O';
+                                updateBoard();
+                                addToSet(setO,index);
+                                checkWin(setO);
+                                break;
+                            case false: 
+                                tiles[index] = 'X';
+                                updateBoard();
+                                addToSet(setX,index);
+                                checkWin(setX);
+                                break;
+                        }
+                        tileList[index].classList.remove('empty');
+                        console.log(tiles,arr);
+                        //console.log(index);
+                    }
+                    console.log(setX,setO);
                 }
+
             })
         }
     })();
@@ -70,15 +95,34 @@ const board = (function () {
             if(win == true)
             {
                 console.log('win');
-                const tiles = document.querySelectorAll('.tile.empty');
-                for(let i=0;i<tiles.length;i++) 
+                const tileList = document.querySelectorAll('.tile.empty');
+                for(let i=0;i<tileList.length;i++) 
                 {
-                    tiles[i].classList.remove('empty');
+                    tileList[i].classList.remove('empty');
                 }
-                reset();
-                return;
+                endGame();
             }
         }
+    }
+    function getEmptyTiles() 
+    {
+        let arr = [];
+        for(let i=0; i<tiles.length;i++) 
+            if(tiles[i]=='') arr.push(i);
+        return arr;
+    }
+    function updateBoard() 
+    {
+        const tileList = document.querySelectorAll('.tile');
+        for(let i=0;i<tileList.length;i++)
+        {
+            tileList[i].innerText = tiles[i];
+        }
+    }
+    function addToSet(arr,val)
+    {
+        arr.push(val);
+        arr.sort((a,b) => (a-b));
     }
 })
 
@@ -95,13 +139,24 @@ function reset() {
     board();
 }
 
-function addBoard() {
+function addBoard() 
+{
     const board = document.createElement('div');
     board.classList.add('board');
     board.id='board';
 
     const container = document.querySelector('.container');
     container.appendChild(board);
+}
+
+function endGame() 
+{
+    const container = document.querySelector('.container');
+    const modal = document.createElement('dialog');
+    modal.classList.add('modal');
+
+    container.appendChild(modal);
+    modal.showModal();
 }
 
 function clearStart() 
@@ -118,7 +173,18 @@ function clearStart()
 }
 
 (function startMenu() {
-    const selectButton = document.querySelector('.select');
+    const container = document.querySelector('.container');
+    const menu = document.createElement('div');
+    menu.classList.add('selection');
+
+    const menuHeader = document.createElement('h3');
+    menuHeader.innerText = 'Select your opponent';
+    menu.appendChild(menuHeader);
+
+    const selectButton = document.createElement('button');
+    selectButton.classList.add("select");
+    selectButton.id = 'player';
+    selectButton.innerText = 'Player';
     selectButton.addEventListener('click',() => {
         if(selectButton.id == 'player')
         {
@@ -133,7 +199,11 @@ function clearStart()
             selectButton.style.backgroundColor = 'lightgreen';
         }
     });
-    const startButton = document.querySelector('.start');
+    menu.appendChild(selectButton);
+
+    const startButton = document.createElement('button');
+    startButton.classList.add('start');
+    startButton.innerText = 'Start Game!';
     startButton.addEventListener('click', () => {
         clearStart();
         if(selectButton.id == 'computer') 
@@ -142,11 +212,13 @@ function clearStart()
         }
         else
         {
-            
+            vsAI = 0;
         }
         addBoard();
         reset();
     });
+    menu.appendChild(startButton);  
+    container.appendChild(menu);
 })();
 
 const user = createPlayer('john');
