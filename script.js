@@ -1,20 +1,16 @@
-function createPlayer() {
+function createPlayer(name) {
+    let playerName = name;
     let score = 0;
-    let marker = 'X';
+    let marker = true;
+    const getName = () => playerName;
     const getScore = () => score;
     const raiseScore = () => score++;
     const resetScore = () => score=0;
     const getMarker = () => marker;
-    const swapMarker = () => 
-    {
-        if(marker=='X') marker='O';
-        else marker = 'X';
-    }
+    const swapMarker = () => marker = !marker;
 
-    return {getScore,raiseScore,resetScore,getMarker,swapMarker};
+    return {getName,getScore,raiseScore,resetScore,getMarker,swapMarker};
 };
-//Instantiate Player
-const user = createPlayer();
 
 const board = (function () {
     const boardDiv = document.querySelector('.board');
@@ -41,9 +37,9 @@ const board = (function () {
                 if(tiles[i].classList.contains('empty'))
                 {
                     tiles[i].classList.remove('empty');
-                    tiles[i].innerText = user.getMarker();
-                    if(user.getMarker() == 'X') 
+                    if(user.getMarker()) 
                     {
+                        tiles[i].innerText = 'X';
                         setX.push(parseInt(tiles[i].id));
                         setX.sort((a,b) => (a-b));
                         checkWin(setX);
@@ -51,6 +47,7 @@ const board = (function () {
                     }
                     else 
                     {
+                        tiles[i].innerText = 'O';
                         setO.push(parseInt(tiles[i].id));
                         setO.sort((a,b) => (a-b));
                         checkWin(setO);
@@ -98,4 +95,59 @@ function reset() {
     board();
 }
 
-reset();
+function addBoard() {
+    const board = document.createElement('div');
+    board.classList.add('board');
+    board.id='board';
+
+    const container = document.querySelector('.container');
+    container.appendChild(board);
+}
+
+function clearStart() 
+{
+    const container = document.querySelector('.container');
+    const items = document.querySelectorAll('.container > div');
+    if(container.hasChildNodes())
+    {
+        for(let i=0;i<items.length;i++)
+        {
+            container.removeChild(items[i]);
+        }
+    }
+}
+
+(function startMenu() {
+    const selectButton = document.querySelector('.select');
+    selectButton.addEventListener('click',() => {
+        if(selectButton.id == 'player')
+        {
+            selectButton.id = 'computer';
+            selectButton.innerText = 'Computer';
+            selectButton.style.backgroundColor = 'lightcoral';
+        }
+        else 
+        {
+            selectButton.id = 'player';
+            selectButton.innerText = 'Player';
+            selectButton.style.backgroundColor = 'lightgreen';
+        }
+    });
+    const startButton = document.querySelector('.start');
+    startButton.addEventListener('click', () => {
+        clearStart();
+        if(selectButton.id == 'computer') 
+        {
+            vsAI = 1;
+        }
+        else
+        {
+            
+        }
+        addBoard();
+        reset();
+    });
+})();
+
+const user = createPlayer('john');
+var vsAI = 0;
