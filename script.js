@@ -141,12 +141,36 @@ function reset() {
 
 function addBoard() 
 {
+    const boardLeft = document.createElement('div');
+    boardLeft.classList.add('left');
+    const player1Name = document.createElement('h3');
+    player1Name.innerText = player1.getName();
+    boardLeft.appendChild(player1Name);
+
+    const scoreText1 = document.createElement('p');
+    scoreText1.innerText = 'Score: 0';
+    boardLeft.appendChild(scoreText1);
+
+
+    const boardRight = document.createElement('div');
+    boardRight.classList.add('right');
+    const player2Name = document.createElement('h3');
+    player2Name.innerText = player2.getName();
+    boardRight.appendChild(player2Name);
+    
+    const scoreText2 = document.createElement('p');
+    scoreText2.innerText = 'Score: 0';
+    boardRight.appendChild(scoreText2);
+
+
     const board = document.createElement('div');
     board.classList.add('board');
     board.id='board';
 
     const container = document.querySelector('.container');
+    container.appendChild(boardLeft);
     container.appendChild(board);
+    container.appendChild(boardRight);
 }
 
 function endGame() 
@@ -168,11 +192,11 @@ function endGame()
         const container = document.querySelector('.container');
         const delModal = document.querySelector('.modal');
         container.removeChild(delModal);
-        const nodes = container.childNodes;
+
+        const nodes = document.querySelectorAll('.container > div');
         console.log(nodes);
         for(let i=0;i<nodes.length;i++)
         {
-            console.log(i);
             container.removeChild(nodes[i]);
         }
         startMenu();
@@ -241,10 +265,15 @@ function startMenu() {
         if(selectButton.id == 'computer') 
         {
             vsAI = 1;
+            player1 = createPlayer(prompt('Enter your name:'));
+            player2 = createPlayer('Computer');
         }
         else
         {
             vsAI = 0;
+            player1 = createPlayer(prompt('Enter the name of player 1:'));
+            player2 = createPlayer(prompt('Enter the name of player 2:'));
+
         }
         addBoard();
         reset();
@@ -253,5 +282,7 @@ function startMenu() {
     container.appendChild(menu);
 };
 startMenu();
-const user = createPlayer('john');
 var vsAI = 0;
+var player1;
+var player2;
+var turnUser = 1;

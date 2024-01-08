@@ -6,7 +6,7 @@
 .container{
     padding:50px;
     display:flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -113,3 +113,14 @@
     margin-bottom:-1px;
     box-shadow: 0 0 0 white;
 }   
+
+.left, .right {
+    border:1px solid black;
+    width:200px;
+    height:100px;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+}
