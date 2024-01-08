@@ -79,3 +79,37 @@
     margin-bottom:-1px;
     box-shadow: 0 0 0 white;
 }
+
+.modal {
+    width:500px;
+    height:200px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:30px;
+}
+
+.modal-container {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:40px;
+}
+
+.modal-container > button {
+    width:160px;
+    height:50px;
+    border-radius:10px;
+    border:0;
+    background-color:lightgray;
+}
+.modal-container > button:hover {
+    cursor:grab;
+    filter:brightness(95%);
+}
+.modal-container > button:active {
+    margin-top:1px;
+    margin-bottom:-1px;
+    box-shadow: 0 0 0 white;
+}   

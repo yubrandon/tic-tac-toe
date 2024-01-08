@@ -53,7 +53,7 @@ const board = (function () {
                     }
                     if(!vsAI) user.swapMarker();
                     //console.log(e.target);
-                    console.log(vsAI);
+                    //console.log(vsAI);
                     if(vsAI)
                     {
                         let arr = getEmptyTiles();
@@ -74,10 +74,10 @@ const board = (function () {
                                 break;
                         }
                         tileList[index].classList.remove('empty');
-                        console.log(tiles,arr);
+                        //console.log(tiles,arr);
                         //console.log(index);
                     }
-                    console.log(setX,setO);
+                    //console.log(setX,setO);
                 }
 
             })
@@ -155,6 +155,38 @@ function endGame()
     const modal = document.createElement('dialog');
     modal.classList.add('modal');
 
+    const mHeader = document.createElement('h3');
+    mHeader.innerText = 'Game Over!';
+    modal.appendChild(mHeader);
+
+    const modalDiv = document.createElement('div');
+    modalDiv.classList.add('modal-container');
+
+    const resetButton = document.createElement('button');
+    resetButton.innerText = 'Return to Menu';
+    resetButton.addEventListener('click', () => {
+        const container = document.querySelector('.container');
+        const delModal = document.querySelector('.modal');
+        container.removeChild(delModal);
+        const nodes = container.childNodes;
+        console.log(nodes);
+        for(let i=0;i<nodes.length;i++)
+        {
+            console.log(i);
+            container.removeChild(nodes[i]);
+        }
+        startMenu();
+    });
+    modalDiv.appendChild(resetButton);
+
+    const contButton = document.createElement('button');
+    contButton.innerText = 'Continue Playing';
+    contButton.addEventListener('click', () => {
+
+    });
+    modalDiv.appendChild(contButton);
+
+    modal.appendChild(modalDiv);
     container.appendChild(modal);
     modal.showModal();
 }
@@ -172,7 +204,7 @@ function clearStart()
     }
 }
 
-(function startMenu() {
+function startMenu() {
     const container = document.querySelector('.container');
     const menu = document.createElement('div');
     menu.classList.add('selection');
@@ -219,7 +251,7 @@ function clearStart()
     });
     menu.appendChild(startButton);  
     container.appendChild(menu);
-})();
-
+};
+startMenu();
 const user = createPlayer('john');
 var vsAI = 0;
