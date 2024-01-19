@@ -37,28 +37,63 @@ const board = (function () {
                 if(tileList[i].classList.contains('empty'))
                 {
                     tileList[i].classList.remove('empty');
-                    if(user.getMarker()) 
+                    console.log(turnUser);
+                    switch(turnUser)
                     {
-                        tiles[parseInt(tileList[i].id)] = 'X';
-                        updateBoard();
-                        addToSet(setX,parseInt(tileList[i].id));
-                        checkWin(setX);
+                        case 1:
+                            //console.log(player1.getMarker());
+                            if(player1.getMarker()) 
+                            {
+                                tiles[parseInt(tileList[i].id)] = 'X';
+                                updateBoard();
+                                addToSet(setX,parseInt(tileList[i].id));
+                                checkWin(setX);
+                            }
+                            else 
+                            {
+                                tiles[parseInt(tileList[i].id)] = 'O';
+                                updateBoard();
+                                addToSet(setO,parseInt(tileList[i].id));
+                                checkWin(setO);
+                            }
+                            break;
+                        case 2:
+                            //console.log(player2.getMarker());
+                            if(player2.getMarker()) 
+                            {
+                                tiles[parseInt(tileList[i].id)] = 'X';
+                                updateBoard();
+                                addToSet(setX,parseInt(tileList[i].id));
+                                checkWin(setX);
+                            }
+                            else 
+                            {
+                                tiles[parseInt(tileList[i].id)] = 'O';
+                                updateBoard();
+                                addToSet(setO,parseInt(tileList[i].id));
+                                checkWin(setO);
+                            }
+                            break;
                     }
-                    else 
+                    if(!vsAI)
                     {
-                        tiles[parseInt(tileList[i].id)] = 'O';
-                        updateBoard();
-                        addToSet(setO,parseInt(tileList[i].id));
-                        checkWin(setO);
+                        switch(turnUser)
+                        {
+                            case 1: 
+                                turnUser = 2;
+                                break;
+                            case 2: 
+                                turnUser = 1;
+                                break;
+                        }
                     }
-                    if(!vsAI) user.swapMarker();
                     //console.log(e.target);
                     //console.log(vsAI);
                     if(vsAI)
                     {
                         let arr = getEmptyTiles();
                         let index = arr[Math.floor(Math.random()*(arr.length-1))];
-                        switch(user.getMarker())
+                        switch(player1.getMarker())
                         {
                             case true: 
                                 tiles[index] = 'O';
@@ -194,7 +229,7 @@ function endGame()
         container.removeChild(delModal);
 
         const nodes = document.querySelectorAll('.container > div');
-        console.log(nodes);
+        //console.log(nodes);
         for(let i=0;i<nodes.length;i++)
         {
             container.removeChild(nodes[i]);
@@ -273,7 +308,7 @@ function startMenu() {
             vsAI = 0;
             player1 = createPlayer(prompt('Enter the name of player 1:'));
             player2 = createPlayer(prompt('Enter the name of player 2:'));
-
+            player2.swapMarker();
         }
         addBoard();
         reset();
