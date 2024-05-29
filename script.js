@@ -47,14 +47,14 @@ const board = (function () {
                                 tiles[parseInt(tileList[i].id)] = 'X';
                                 updateBoard();
                                 addToSet(setX,parseInt(tileList[i].id));
-                                checkWin(setX);
+                                checkWin(setX, 1);
                             }
                             else 
                             {
                                 tiles[parseInt(tileList[i].id)] = 'O';
                                 updateBoard();
                                 addToSet(setO,parseInt(tileList[i].id));
-                                checkWin(setO);
+                                checkWin(setO, 1);
                             }
                             break;
                         case 2:
@@ -64,14 +64,14 @@ const board = (function () {
                                 tiles[parseInt(tileList[i].id)] = 'X';
                                 updateBoard();
                                 addToSet(setX,parseInt(tileList[i].id));
-                                checkWin(setX);
+                                checkWin(setX, 2);
                             }
                             else 
                             {
                                 tiles[parseInt(tileList[i].id)] = 'O';
                                 updateBoard();
                                 addToSet(setO,parseInt(tileList[i].id));
-                                checkWin(setO);
+                                checkWin(setO, 2);
                             }
                             break;
                     }
@@ -99,13 +99,13 @@ const board = (function () {
                                 tiles[index] = 'O';
                                 updateBoard();
                                 addToSet(setO,index);
-                                checkWin(setO);
+                                checkWin(setO, 2);
                                 break;
                             case false: 
                                 tiles[index] = 'X';
                                 updateBoard();
                                 addToSet(setX,index);
-                                checkWin(setX);
+                                checkWin(setX, 2);
                                 break;
                         }
                         tileList[index].classList.remove('empty');
@@ -119,8 +119,9 @@ const board = (function () {
         }
     })();
 
-    function checkWin (arr) 
+    function checkWin (arr, player) 
     {
+        console.log(player);
         for(let i=0;i<winningSets.length;i++)
         {
             let win = true;
