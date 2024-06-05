@@ -1,3 +1,4 @@
+//createPlayer defines variables within a class and returns methods for accessing variables
 function createPlayer(name) {
     let playerName = name;
     let score = 0;
@@ -12,6 +13,7 @@ function createPlayer(name) {
     return {getName,getScore,raiseScore,resetScore,getMarker,swapMarker};
 };
 
+//board creation function creates itself 
 const board = (function () {
     const boardDiv = document.querySelector('.board');
     const tiles = ['','','','','','','','',''];
@@ -29,6 +31,7 @@ const board = (function () {
             boardDiv.appendChild(tile);
         }
     })();
+    //self-calling function to define tiles and click properties
     const tileClick = (function () 
     {
         const tileList = document.querySelectorAll('.tile');
@@ -118,7 +121,7 @@ const board = (function () {
             })
         }
     })();
-
+    //check if the tiles of the current player appear in any winning sets
     function checkWin (arr, player) 
     {
         console.log(player);
@@ -140,6 +143,7 @@ const board = (function () {
             }
         }
     }
+    //check the array of tiles for empty tiles, push their indexes to the local array and return
     function getEmptyTiles() 
     {
         let arr = [];
@@ -147,6 +151,7 @@ const board = (function () {
             if(tiles[i]=='') arr.push(i);
         return arr;
     }
+    //update the board according to the array
     function updateBoard() 
     {
         const tileList = document.querySelectorAll('.tile');
@@ -162,6 +167,7 @@ const board = (function () {
     }
 })
 
+//reset the board between matches
 function reset() {
     const items = document.querySelector('.board');
     if(items.hasChildNodes())
@@ -175,6 +181,7 @@ function reset() {
     board();
 }
 
+//add player ui to the screen
 function addBoard() 
 {
     const boardLeft = document.createElement('div');
@@ -209,6 +216,7 @@ function addBoard()
     container.appendChild(boardRight);
 }
 
+//modal to prompt end of game
 function endGame() 
 {
     const container = document.querySelector('.container');
@@ -251,6 +259,7 @@ function endGame()
     modal.showModal();
 }
 
+//clears starting menu to add board, etc.
 function clearStart() 
 {
     const container = document.querySelector('.container');
@@ -263,7 +272,7 @@ function clearStart()
         }
     }
 }
-
+//starting menu to select type of game
 function startMenu() {
     const container = document.querySelector('.container');
     const menu = document.createElement('div');
